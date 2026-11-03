@@ -26,9 +26,9 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
   <tr>
     <td width="62%">
 
-**Mercurium** é o primeiro projeto do meu portfólio público de Desenvolvedor Pleno, idealizado e mantido por **Gustavo Osterno Thé**.
+Eu sou o **Gustavo Osterno Thé**, e o **Mercurium** é um dos cinco projetos do meu portfólio público de Desenvolvedor Pleno. Idealizei, desenvolvo e mantenho este repositório.
 
-O projeto é construído **um dia de cada vez**, com roadmap público, commits pequenos e decisões registradas em ADRs. A ideia é mostrar não só o resultado final, mas o **processo**: como um banco de dados nasce dos requisitos de negócio e evolui até estar pronto para produção.
+Construo o projeto **um dia de cada vez**, com roadmap público, commits pequenos e decisões registradas em ADRs. Quero mostrar não só o resultado final, mas o **processo**: como um banco de dados nasce dos requisitos de negócio e evolui até estar pronto para produção.
 
     </td>
     <td width="38%">
@@ -74,15 +74,17 @@ O projeto é construído **um dia de cada vez**, com roadmap público, commits p
 | **8** regras de negócio | **CTEs** recursivas e **window functions** | `EXPLAIN` antes/depois | **1** ADR registrado |
 | até a **3FN** | **views** e **triggers** | migrações versionadas | Conventional Commits |
 
+<sub>Metas para o fim do roadmap. O estado atual está nos badges, no <a href="ROADMAP.md">ROADMAP</a> e na seção <a href="#-o-que-ainda-falta">O que ainda falta</a>.</sub>
+
 </div>
 
 ---
 
 ## ☿ A origem do nome
 
-> *Mercúrio, mensageiro dos deuses romanos, protegia os comerciantes, os viajantes e o lucro honesto.*
+> *Mercúrio, mensageiro dos deuses romanos, era o protetor dos comerciantes e dos viajantes (e, curiosamente, também dos ladrões).*
 
-O nome vem de **Mercurius**, deus do comércio — a mesma raiz de *mercado* e *mercadoria*. O Mercurium é o "cofre" onde ficam guardados os clientes, produtos, pedidos e pagamentos de uma loja virtual fictícia. Cada pedido é uma mensagem entre quem vende e quem compra, e o banco é quem garante que nenhuma delas se perca.
+Escolhi o nome por causa de **Mercurius**, o deus do comércio, cujo nome tem a mesma raiz latina de *merx* (mercadoria). O Mercurium é o "cofre" onde ficam guardados os clientes, produtos, pedidos e pagamentos de uma loja virtual fictícia. Gosto de pensar em cada pedido como uma mensagem entre quem vende e quem compra, e o banco é quem garante que nenhuma delas se perca.
 
 ---
 
@@ -90,7 +92,7 @@ O nome vem de **Mercurius**, deus do comércio — a mesma raiz de *mercado* e *
 
 Uma loja virtual vende produtos organizados em **categorias hierárquicas**. Clientes fazem **pedidos**, pagam com **um ou mais meios de pagamento** e podem **avaliar** o que compraram. O **estoque** é controlado por produto e toda movimentação precisa ser rastreável.
 
-O laboratório responde a uma pergunta simples: *como modelar isso de um jeito que o próprio banco proteja os dados e responda rápido às perguntas do negócio?*
+Com este laboratório eu quero responder a uma pergunta simples: *como modelar isso de um jeito que o próprio banco proteja os dados e responda rápido às perguntas do negócio?*
 
 | Camada | O que entrega |
 |---|---|
@@ -175,7 +177,7 @@ stateDiagram-v2
     CANCELLED --> [*]
 ```
 
-> 💡 **Por que valores em centavos?** O SQLite não tem `DECIMAL` nativo. Guardar dinheiro em `REAL` gera erros de arredondamento; guardar em **centavos (`INTEGER`)** é exato. A decisão está no [ADR 0001](docs/adr/0001-usar-sqlite.md).
+> 💡 **Por que valores em centavos?** O SQLite não tem `DECIMAL` nativo. Guardar dinheiro em `REAL` gera erros de arredondamento; por isso decidi guardar em **centavos (`INTEGER`)**, que é exato. Registrei essa decisão no [ADR 0001](docs/adr/0001-usar-sqlite.md).
 
 ---
 
@@ -223,11 +225,11 @@ stateDiagram-v2
 
 ## 🧭 Metodologias e decisões
 
-- **Roadmap diário público** — cada dia vira uma issue, uma branch e um PR. Veja o [ROADMAP.md](ROADMAP.md).
-- **Conventional Commits** — histórico legível (`feat:`, `docs:`, `test:`...).
-- **ADR (Architecture Decision Records)** — toda decisão relevante fica registrada com contexto e alternativas.
-- **Banco como guardião** — regras críticas ficam em constraints e triggers, não só na aplicação.
-- **Medir antes de otimizar** — nenhum índice entra sem `EXPLAIN QUERY PLAN` antes e depois.
+- **Roadmap diário público** — avanço um dia de cada vez e registro tudo no [ROADMAP.md](ROADMAP.md).
+- **Conventional Commits** — mantenho o histórico legível (`feat:`, `docs:`, `test:`...).
+- **ADR (Architecture Decision Records)** — registro cada decisão relevante com contexto e alternativas.
+- **Banco como guardião** — coloco as regras críticas em constraints e triggers, não só na aplicação.
+- **Medir antes de otimizar** — não crio nenhum índice sem comparar o `EXPLAIN QUERY PLAN` antes e depois.
 
 | ADR | Decisão | Status |
 |---|---|---|
@@ -248,7 +250,7 @@ Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [C
 
 ## 🚀 Como rodar
 
-> O script de build automático chega no **Dia 09**. Até lá, o fluxo é manual.
+> O script de build automático entra no **Dia 09**. Até lá, o fluxo é manual.
 
 **Pré-requisito:** [SQLite 3](https://sqlite.org/download.html) (ou o [DB Browser for SQLite](https://sqlitebrowser.org/)).
 
@@ -295,7 +297,7 @@ mercurium-sql/
 
 ## 🧩 O que ainda falta
 
-Checklist vivo do que ainda precisa ser incrementado neste repositório (código e documentação).
+Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório (código e documentação).
 
 **Projeto**
 - [ ] DER definitivo em `docs/der.md` e normalização documentada (Dia 02)
@@ -319,7 +321,7 @@ Checklist vivo do que ainda precisa ser incrementado neste repositório (código
 
 ## 🔗 Projetos relacionados
 
-Este repositório faz parte de uma trilha de 5 projetos:
+Este repositório faz parte do meu portfólio de 5 projetos, que evoluem em paralelo:
 
 | Projeto | Stack | Relação |
 |---|---|---|
@@ -327,10 +329,10 @@ Este repositório faz parte de uma trilha de 5 projetos:
 | ⚒ [Nidavellir](https://github.com/GustavoThe01/nidavellir-inventory) | Java 21 + JDBC | Estoque em Java puro, com SQL escrito à mão |
 | ⚖ [Plutus](https://github.com/GustavoThe01/plutus-ledger) | C# + Dapper | Livro-razão bancário com transações explícitas |
 | ♾ [Moirai](https://github.com/GustavoThe01/moirai-taskflow) | Spring Boot | API de tarefas com Arquitetura Hexagonal |
-| ✦ [Bifrost](https://github.com/GustavoThe01/bifrost-orders) | ASP.NET Core | **Reaproveita este modelo de dados** na API de pedidos |
+| ✦ [Bifrost](https://github.com/GustavoThe01/bifrost-orders) | ASP.NET Core | API de pedidos que **parte deste modelo de dados** |
 
 <div align="center">
 
-<sub>Feito com ☕ e SQL por <a href="https://github.com/GustavoThe01">Gustavo Osterno Thé</a></sub>
+<sub>Feito por mim, com ☕ e SQL · <a href="https://github.com/GustavoThe01">Gustavo Osterno Thé</a></sub>
 
 </div>
