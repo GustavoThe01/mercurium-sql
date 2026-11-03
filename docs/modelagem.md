@@ -17,7 +17,7 @@ por produto e toda movimentação deve ser rastreável.
 | `product` | Item vendável | SKU (único), nome, descrição, preço, ativo |
 | `inventory` | Saldo de estoque por produto (1:1) | quantidade disponível, estoque mínimo |
 | `stock_movement` | Histórico de entradas e saídas | tipo, quantidade, motivo, data |
-| `order` | Pedido do cliente | status, data, endereço de entrega, total |
+| `customer_order` | Pedido do cliente (`order` é palavra reservada do SQL) | status, data, endereço de entrega (o total é calculado a partir dos itens) |
 | `order_item` | Itens do pedido (N:N pedido ↔ produto) | quantidade, preço unitário **no momento da compra** |
 | `payment` | Pagamento do pedido (1 pedido : N pagamentos) | método, valor, status, data |
 | `review` | Avaliação de produto por cliente | nota (1–5), comentário, data |
@@ -40,4 +40,5 @@ por produto e toda movimentação deve ser rastreável.
 - Quais clientes não compram há mais de 90 dias?
 
 ## 5. Próximos passos
-- Dia 02: DER em Mermaid ([der.md](der.md)) e normalização até a 3FN.
+- ✅ Dia 02: DER, cardinalidades e normalização até a 3FN em [der.md](der.md).
+- Dia 03: schema físico (DDL) a partir do DER.

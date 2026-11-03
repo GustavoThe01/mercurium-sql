@@ -9,9 +9,9 @@
 - **Conceitos:** levantamento de requisitos, ADR
 
 ### Dia 02 — Modelo conceitual e lógico
-- [ ] DER em Mermaid (`erDiagram`) em `docs/der.md`
-- [ ] Cardinalidades (1:N, N:N com tabela associativa)
-- [ ] Documentar a normalização até a 3FN, com um exemplo de tabela "antes/depois"
+- [x] DER em Mermaid (`erDiagram`) em `docs/der.md`
+- [x] Cardinalidades (1:N, N:N com tabela associativa)
+- [x] Documentar a normalização até a 3FN, com um exemplo de tabela "antes/depois"
 - **Conceitos:** cardinalidade, chaves naturais vs. surrogate, normalização
 
 ### Dia 03 — Schema físico (DDL)

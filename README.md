@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_01_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_02_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -109,12 +109,12 @@ Com este laboratório eu quero responder a uma pergunta simples: *como modelar i
 
 ## 🗄️ Modelo de dados
 
-> Versão inicial, derivada dos requisitos em [`docs/modelagem.md`](docs/modelagem.md). O DER definitivo chega no Dia 02.
+> Visão resumida. O DER completo, com todas as tabelas, cardinalidades e a normalização passo a passo, está em [`docs/der.md`](docs/der.md).
 
 ```mermaid
 erDiagram
     CUSTOMER ||--o{ ADDRESS : "possui"
-    CUSTOMER ||--o{ ORDER : "faz"
+    CUSTOMER ||--o{ CUSTOMER_ORDER : "faz"
     CUSTOMER ||--o{ REVIEW : "escreve"
     CATEGORY ||--o{ CATEGORY : "é pai de"
     CATEGORY ||--o{ PRODUCT : "agrupa"
@@ -122,9 +122,9 @@ erDiagram
     PRODUCT ||--o{ STOCK_MOVEMENT : "movimenta"
     PRODUCT ||--o{ ORDER_ITEM : "aparece em"
     PRODUCT ||--o{ REVIEW : "recebe"
-    ORDER ||--|{ ORDER_ITEM : "contém"
-    ORDER ||--o{ PAYMENT : "é pago por"
-    ADDRESS ||--o{ ORDER : "recebe entrega"
+    CUSTOMER_ORDER ||--|{ ORDER_ITEM : "contém"
+    CUSTOMER_ORDER ||--o{ PAYMENT : "é pago por"
+    ADDRESS ||--o{ CUSTOMER_ORDER : "recebe entrega"
 
     CUSTOMER {
         int id PK
@@ -141,11 +141,10 @@ erDiagram
         int active
         int category_id FK
     }
-    ORDER {
+    CUSTOMER_ORDER {
         int id PK
         int customer_id FK
         text status
-        int total_cents
         text created_at
     }
     ORDER_ITEM {
@@ -241,7 +240,7 @@ stateDiagram-v2
 
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
-| 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩⬜⬜⬜⬜ |
+| 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩⬜⬜⬜ |
 | 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | ⬜⬜⬜⬜⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
@@ -282,7 +281,7 @@ mercurium-sql/
 │   ├── adr/                 # ✅ decisões de arquitetura
 │   ├── assets/              # ✅ banner e imagens
 │   ├── modelagem.md         # ✅ requisitos e regras de negócio
-│   ├── der.md               # ⏳ Dia 02 — diagrama entidade-relacionamento
+│   ├── der.md               # ✅ DER, cardinalidades e normalização
 │   └── performance.md       # ⏳ Dia 08 — análises antes/depois de índices
 ├── migrations/              # ⏳ Dia 03 — V001__create_schema.sql, V002__...
 ├── seeds/                   # ⏳ Dia 04 — dados de exemplo
@@ -300,7 +299,7 @@ mercurium-sql/
 Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório (código e documentação).
 
 **Projeto**
-- [ ] DER definitivo em `docs/der.md` e normalização documentada (Dia 02)
+- [x] DER definitivo em `docs/der.md` e normalização documentada (Dia 02)
 - [ ] Schema físico `V001__create_schema.sql` (Dia 03)
 - [ ] Seeds realistas (Dia 04)
 - [ ] Consultas fundamentais e avançadas resolvidas (Dias 05–06)
