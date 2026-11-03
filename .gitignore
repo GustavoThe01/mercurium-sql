@@ -1,0 +1,13 @@
+# Bancos gerados pelo script de build (recriáveis)
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Editores / SO
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
