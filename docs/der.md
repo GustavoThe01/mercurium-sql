@@ -1,7 +1,7 @@
 # DER — Mercurium
 
 Aqui está o modelo entidade-relacionamento que desenhei a partir dos requisitos em [modelagem.md](modelagem.md).
-É o modelo **lógico**: o schema físico (DDL) entra no Dia 03 e segue exatamente estas definições.
+O schema físico que implementa este modelo está em [`V001__create_schema.sql`](../migrations/V001__create_schema.sql).
 
 ## 1. Diagrama
 
@@ -10,7 +10,6 @@ erDiagram
     CUSTOMER ||--o{ ADDRESS : "possui"
     CUSTOMER ||--o{ CUSTOMER_ORDER : "faz"
     CUSTOMER ||--o{ REVIEW : "escreve"
-    ADDRESS ||--o{ CUSTOMER_ORDER : "recebe a entrega de"
     CATEGORY |o--o{ CATEGORY : "é pai de"
     CATEGORY ||--o{ PRODUCT : "agrupa"
     PRODUCT ||--|| INVENTORY : "tem saldo em"
@@ -69,8 +68,12 @@ erDiagram
     CUSTOMER_ORDER {
         INTEGER id PK
         INTEGER customer_id FK
-        INTEGER shipping_address_id FK
         TEXT status
+        TEXT shipping_street "cópia do endereço"
+        TEXT shipping_number
+        TEXT shipping_city
+        TEXT shipping_state
+        TEXT shipping_zip_code
         TEXT created_at
     }
     ORDER_ITEM {
@@ -103,14 +106,13 @@ erDiagram
 |---|---|---|
 | Cliente → Endereço | 1 : N | Um cliente pode ter vários endereços; cada endereço pertence a um único cliente |
 | Cliente → Pedido | 1 : N | O cliente pode ainda não ter comprado (0) ou ter muitos pedidos |
-| Endereço → Pedido | 1 : N | O pedido guarda **qual** endereço recebeu a entrega |
 | Categoria → Categoria | 0..1 : N | Auto-relacionamento: a categoria raiz não tem pai |
 | Categoria → Produto | 1 : N | Todo produto está em exatamente uma categoria |
 | Produto → Estoque | 1 : 1 | Cada produto tem um único saldo; separei em outra tabela porque o saldo muda o tempo todo e o cadastro quase nunca |
 | Pedido ↔ Produto | N : N | Resolvido pela tabela associativa `order_item` |
 | Pedido → Pagamento | 1 : N | Um pedido pode ser pago em partes (ex.: PIX + cartão) ou ter tentativas recusadas |
 | Produto → Movimentação | 1 : N | Histórico completo de entradas, saídas e ajustes |
-| Cliente/Produto → Avaliação | 1 : N | Uma avaliação por cliente e produto (regra garantida no Dia 03) |
+| Cliente/Produto → Avaliação | 1 : N | Uma avaliação por cliente e produto, garantida por `UNIQUE (customer_id, product_id)` |
 
 ## 3. Decisões de modelagem
 
@@ -182,7 +184,36 @@ O resultado é exatamente o DER da seção 1.
 | Dado | Por que fica "duplicado" |
 |---|---|
 | `order_item.unit_price_cents` | É o preço histórico da compra, não uma cópia do preço atual |
-| `customer_order.shipping_address_id` | Aponta para o endereço usado; se o cliente editar o endereço depois, o pedido não pode mudar. No Dia 03 decido se o endereço de entrega vira cópia (snapshot) no próprio pedido |
+| `customer_order.shipping_*` | No Dia 03 decidi copiar o endereço de entrega para o pedido (snapshot), em vez de apontar para `address`. Se o cliente editar ou apagar o endereço depois, o pedido continua mostrando para onde foi enviado |
 
-## 5. Próximos passos
-- **Dia 03:** transformar este modelo em `migrations/V001__create_schema.sql` com `STRICT`, `CHECK`, `UNIQUE` e `ON DELETE`.
+## 5. O que acontece ao excluir (`ON DELETE`)
+
+Escolhi `RESTRICT` para tudo que é histórico e `CASCADE` só para o que não faz sentido sem o registro principal.
+
+| Chave estrangeira | Regra | Por quê |
+|---|---|---|
+| `address.customer_id` | `CASCADE` | Endereço não existe sem cliente, e os pedidos guardam cópia própria |
+| `category.parent_id` | `RESTRICT` | Excluir a categoria pai deixaria as filhas soltas |
+| `product.category_id` | `RESTRICT` | Todo produto precisa de categoria; mova os produtos antes |
+| `inventory.product_id` | `CASCADE` | O saldo é parte do produto (relação 1:1) |
+| `customer_order.customer_id` | `RESTRICT` | Cliente com pedido é histórico de venda e não pode sumir |
+| `order_item.order_id` | `CASCADE` | Item é parte do pedido |
+| `order_item.product_id` | `RESTRICT` | Produto vendido é desativado, nunca excluído (regra 8) |
+| `payment.order_id` | `RESTRICT` | Registro financeiro não é apagado junto com o pedido |
+| `stock_movement.product_id` | `RESTRICT` | O histórico de estoque precisa ser rastreável (regra 7) |
+| `stock_movement.order_id` | `RESTRICT` | Mesmo motivo: a movimentação aponta para o pedido que a originou |
+| `review.customer_id` e `review.product_id` | `CASCADE` | A avaliação não tem sentido sem o autor ou sem o produto |
+
+**Atenção:** o SQLite só respeita chaves estrangeiras com `PRAGMA foreign_keys = ON`, e esse comando vale **por conexão**. Toda aplicação que abrir este banco precisa executá-lo ao conectar.
+
+## 6. Regras que ficam para os triggers
+
+O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas, então entram com os triggers do Dia 07:
+
+- baixa de estoque ao inserir item de pedido, com erro se faltar saldo;
+- pedido só vira `PAID` quando os pagamentos aprovados fecham o total;
+- cliente só avalia o produto que comprou e recebeu;
+- transições válidas de status do pedido.
+
+## 7. Próximos passos
+- **Dia 04:** carregar dados de exemplo realistas dentro de transações.
