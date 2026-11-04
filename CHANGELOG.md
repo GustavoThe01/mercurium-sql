@@ -10,7 +10,10 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Documento de requisitos e regras de negócio (`docs/modelagem.md`).
 - ADR 0001 — escolha do SQLite.
 - DER completo em `docs/der.md`: 10 tabelas, cardinalidades, decisões de modelagem e normalização até a 3FN passo a passo.
+- Schema físico em `migrations/V001__create_schema.sql`: 10 tabelas `STRICT`, com `CHECK`, `UNIQUE`, chaves estrangeiras e `ON DELETE` justificado em `docs/der.md`.
+- Índice único parcial que garante no máximo um endereço principal por cliente.
 
 ### Alterado
 - A tabela de pedidos passa a se chamar `customer_order`, porque `order` é palavra reservada do SQL.
 - O total do pedido deixa de ser coluna e passa a ser calculado a partir dos itens.
+- O endereço de entrega passa a ser copiado para o pedido (snapshot), em vez de apontar para `address`.

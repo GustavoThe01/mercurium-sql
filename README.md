@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_02_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_03_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -124,7 +124,6 @@ erDiagram
     PRODUCT ||--o{ REVIEW : "recebe"
     CUSTOMER_ORDER ||--|{ ORDER_ITEM : "contém"
     CUSTOMER_ORDER ||--o{ PAYMENT : "é pago por"
-    ADDRESS ||--o{ CUSTOMER_ORDER : "recebe entrega"
 
     CUSTOMER {
         int id PK
@@ -240,7 +239,7 @@ stateDiagram-v2
 
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
-| 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩⬜⬜⬜ |
+| 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩⬜⬜ |
 | 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | ⬜⬜⬜⬜⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
@@ -265,7 +264,7 @@ git clone https://github.com/GustavoThe01/mercurium-sql.git
 cd mercurium-sql
 ```
 
-A partir do Dia 03, para criar o banco:
+Para criar o banco com o schema:
 
 ```bash
 sqlite3 mercurium.db < migrations/V001__create_schema.sql
@@ -283,7 +282,7 @@ mercurium-sql/
 │   ├── modelagem.md         # ✅ requisitos e regras de negócio
 │   ├── der.md               # ✅ DER, cardinalidades e normalização
 │   └── performance.md       # ⏳ Dia 08 — análises antes/depois de índices
-├── migrations/              # ⏳ Dia 03 — V001__create_schema.sql, V002__...
+├── migrations/              # ✅ V001__create_schema.sql · ⏳ V002 no Dia 09
 ├── seeds/                   # ⏳ Dia 04 — dados de exemplo
 ├── queries/                 # ⏳ Dias 05–06 — exercícios resolvidos por nível
 ├── tests/                   # ⏳ Dia 10 — asserts de integridade
@@ -300,7 +299,7 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 
 **Projeto**
 - [x] DER definitivo em `docs/der.md` e normalização documentada (Dia 02)
-- [ ] Schema físico `V001__create_schema.sql` (Dia 03)
+- [x] Schema físico `V001__create_schema.sql` (Dia 03)
 - [ ] Seeds realistas (Dia 04)
 - [ ] Consultas fundamentais e avançadas resolvidas (Dias 05–06)
 - [ ] Views e triggers (Dia 07)

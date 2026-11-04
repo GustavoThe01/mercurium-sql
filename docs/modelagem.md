@@ -41,4 +41,5 @@ por produto e toda movimentação deve ser rastreável.
 
 ## 5. Próximos passos
 - ✅ Dia 02: DER, cardinalidades e normalização até a 3FN em [der.md](der.md).
-- Dia 03: schema físico (DDL) a partir do DER.
+- ✅ Dia 03: schema físico em [`V001__create_schema.sql`](../migrations/V001__create_schema.sql).
+- Dia 04: dados de exemplo.

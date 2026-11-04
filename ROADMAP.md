@@ -15,9 +15,9 @@
 - **Conceitos:** cardinalidade, chaves naturais vs. surrogate, normalização
 
 ### Dia 03 — Schema físico (DDL)
-- [ ] `migrations/V001__create_schema.sql` com tabelas `STRICT`
-- [ ] `PRAGMA foreign_keys = ON`, `CHECK` (preço > 0, status válidos), `UNIQUE` (e-mail, SKU)
-- [ ] `ON DELETE` adequado em cada FK (RESTRICT vs CASCADE) e justificativa
+- [x] `migrations/V001__create_schema.sql` com tabelas `STRICT`
+- [x] `PRAGMA foreign_keys = ON`, `CHECK` (preço > 0, status válidos), `UNIQUE` (e-mail, SKU)
+- [x] `ON DELETE` adequado em cada FK (RESTRICT vs CASCADE) e justificativa
 - **Conceitos:** integridade referencial, tipos no SQLite (type affinity)
 
 ### Dia 04 — Dados de exemplo
