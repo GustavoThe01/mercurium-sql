@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_03_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_04_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -239,7 +239,7 @@ stateDiagram-v2
 
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
-| 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩⬜⬜ |
+| 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩🟩⬜ |
 | 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | ⬜⬜⬜⬜⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
@@ -270,6 +270,20 @@ Para criar o banco com o schema:
 sqlite3 mercurium.db < migrations/V001__create_schema.sql
 ```
 
+Para carregar os dados de exemplo (60 clientes, 100 produtos e 320 pedidos, todos fictícios):
+
+```bash
+sqlite3 mercurium.db < seeds/S001__dados_de_exemplo.sql
+```
+
+Para ver uma transação sendo desfeita na prática:
+
+```bash
+sqlite3 mercurium.db < queries/00-transacoes.sql
+```
+
+> Os dados são gerados por CTEs recursivas, sem `RANDOM()`: rodando o script, os resultados são sempre os mesmos.
+
 ---
 
 ## 📁 Estrutura do projeto
@@ -283,8 +297,8 @@ mercurium-sql/
 │   ├── der.md               # ✅ DER, cardinalidades e normalização
 │   └── performance.md       # ⏳ Dia 08 — análises antes/depois de índices
 ├── migrations/              # ✅ V001__create_schema.sql · ⏳ V002 no Dia 09
-├── seeds/                   # ⏳ Dia 04 — dados de exemplo
-├── queries/                 # ⏳ Dias 05–06 — exercícios resolvidos por nível
+├── seeds/                   # ✅ dados de exemplo reproduzíveis
+├── queries/                 # ✅ demonstração de transação · ⏳ Dias 05–06 — exercícios
 ├── tests/                   # ⏳ Dia 10 — asserts de integridade
 ├── scripts/                 # ⏳ Dia 09 — build.ps1 / build.sh
 ├── CHANGELOG.md
@@ -300,7 +314,7 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 **Projeto**
 - [x] DER definitivo em `docs/der.md` e normalização documentada (Dia 02)
 - [x] Schema físico `V001__create_schema.sql` (Dia 03)
-- [ ] Seeds realistas (Dia 04)
+- [x] Seeds realistas (Dia 04)
 - [ ] Consultas fundamentais e avançadas resolvidas (Dias 05–06)
 - [ ] Views e triggers (Dia 07)
 - [ ] Análise de performance com índices (Dia 08)

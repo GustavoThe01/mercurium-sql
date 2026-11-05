@@ -21,9 +21,9 @@
 - **Conceitos:** integridade referencial, tipos no SQLite (type affinity)
 
 ### Dia 04 — Dados de exemplo
-- [ ] `seeds/` com dados realistas (≥ 50 clientes, 100 produtos, 300 pedidos)
-- [ ] Inserções dentro de `BEGIN/COMMIT`; testar um `ROLLBACK` proposital
-- [ ] Categorias hierárquicas (categoria pai/filha) para usar no Dia 06
+- [x] `seeds/` com dados realistas (≥ 50 clientes, 100 produtos, 300 pedidos)
+- [x] Inserções dentro de `BEGIN/COMMIT`; testar um `ROLLBACK` proposital
+- [x] Categorias hierárquicas (categoria pai/filha) para usar no Dia 06
 - **Conceitos:** transações, ACID
 
 ### Dia 05 — Consultas fundamentais
