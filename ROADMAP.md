@@ -27,8 +27,8 @@
 - **Conceitos:** transações, ACID
 
 ### Dia 05 — Consultas fundamentais
-- [ ] `queries/01-fundamentos.sql`: 15 perguntas de negócio com enunciado + solução
-- [ ] `INNER/LEFT JOIN`, `GROUP BY`, `HAVING`, `CASE`, subconsultas correlacionadas, `EXISTS`
+- [x] `queries/01-fundamentos.sql`: 15 perguntas de negócio com enunciado + solução
+- [x] `INNER/LEFT JOIN`, `GROUP BY`, `HAVING`, `CASE`, subconsultas correlacionadas, `EXISTS`
 - **Conceitos:** ordem lógica de execução do SELECT
 
 ## Semana 2 — SQL avançado, performance e entrega
