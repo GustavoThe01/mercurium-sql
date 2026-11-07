@@ -15,6 +15,8 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Dados de exemplo em `seeds/S001__dados_de_exemplo.sql`: 19 categorias em 3 níveis, 100 produtos, 60 clientes, 320 pedidos e 211 avaliações, gerados por CTEs recursivas e reproduzíveis.
 - Demonstração de `ROLLBACK` e atomicidade em `queries/00-transacoes.sql`.
 - 15 perguntas de negócio respondidas em `queries/01-fundamentos.sql`, com `JOIN`, `GROUP BY`, `HAVING`, `CASE`, subconsultas correlacionadas e `EXISTS`.
+- 10 consultas analíticas em `queries/02-avancadas.sql`: CTE recursiva da árvore de categorias, `ROW_NUMBER`, `RANK`/`DENSE_RANK`, `LAG`/`LEAD`, `NTILE`, total acumulado e média móvel com framing `ROWS`.
+- Extrato de estoque por produto com saldo acumulado, conferido contra o estoque atual.
 
 ### Alterado
 - A tabela de pedidos passa a se chamar `customer_order`, porque `order` é palavra reservada do SQL.

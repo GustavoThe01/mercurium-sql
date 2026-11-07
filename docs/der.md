@@ -216,4 +216,4 @@ O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas,
 - transições válidas de status do pedido.
 
 ## 7. Próximos passos
-- **Dia 06:** responder às perguntas analíticas com CTEs e window functions.
+- **Dia 07:** views para os relatórios mais usados e triggers de auditoria.

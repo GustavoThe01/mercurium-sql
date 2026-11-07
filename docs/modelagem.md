@@ -44,4 +44,5 @@ por produto e toda movimentação deve ser rastreável.
 - ✅ Dia 03: schema físico em [`V001__create_schema.sql`](../migrations/V001__create_schema.sql).
 - ✅ Dia 04: dados de exemplo em [`S001__dados_de_exemplo.sql`](../seeds/S001__dados_de_exemplo.sql).
 - ✅ Dia 05: 15 perguntas respondidas em [`01-fundamentos.sql`](../queries/01-fundamentos.sql).
-- Dia 06: CTEs e window functions.
+- ✅ Dia 06: 10 consultas analíticas em [`02-avancadas.sql`](../queries/02-avancadas.sql), com CTEs e window functions.
+- Dia 07: views e triggers.

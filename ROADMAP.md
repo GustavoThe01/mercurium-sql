@@ -34,9 +34,9 @@
 ## Semana 2 — SQL avançado, performance e entrega
 
 ### Dia 06 — CTEs e window functions
-- [ ] `queries/02-avancadas.sql`
-- [ ] CTE recursiva para árvore de categorias
-- [ ] `ROW_NUMBER`, `RANK`, `LAG/LEAD`, total acumulado, média móvel, top-N por grupo
+- [x] `queries/02-avancadas.sql`
+- [x] CTE recursiva para árvore de categorias
+- [x] `ROW_NUMBER`, `RANK`, `LAG/LEAD`, total acumulado, média móvel, top-N por grupo
 - **Conceitos:** particionamento e framing de janelas
 
 ### Dia 07 — Views e triggers
