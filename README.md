@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_05_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_06_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -196,12 +196,14 @@ stateDiagram-v2
 
 ## ❓ Perguntas que o banco responde
 
-- 🏆 Quais os **10 produtos mais vendidos** do mês, por categoria? *(window function `RANK`)*
+- 🏆 Quais os **3 produtos mais vendidos** de cada categoria? *(window function `RANK`)*
 - 💰 Qual o **ticket médio** e o **lifetime value** de cada cliente?
 - 📦 Quais produtos estão **abaixo do estoque mínimo**?
 - 📈 Qual a **evolução mensal do faturamento** e o crescimento sobre o mês anterior? *(`LAG`)*
 - 💤 Quais clientes **não compram há mais de 90 dias**?
 - 🌳 Qual o faturamento de uma categoria **somando todas as subcategorias**? *(CTE recursiva)*
+
+As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/02-avancadas.sql`](queries/02-avancadas.sql), junto com total acumulado, média móvel e quartis.
 
 ---
 
@@ -240,7 +242,7 @@ stateDiagram-v2
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
 | 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩🟩🟩 |
-| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | ⬜⬜⬜⬜⬜ |
+| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩⬜⬜⬜⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
 
@@ -282,6 +284,12 @@ Para ver uma transação sendo desfeita na prática:
 sqlite3 mercurium.db < queries/00-transacoes.sql
 ```
 
+Para rodar as consultas (fundamentais e avançadas):
+
+```bash
+sqlite3 -header -column mercurium.db < queries/02-avancadas.sql
+```
+
 > Os dados são gerados por CTEs recursivas, sem `RANDOM()`: rodando o script, os resultados são sempre os mesmos.
 
 ---
@@ -298,7 +306,7 @@ mercurium-sql/
 │   └── performance.md       # ⏳ Dia 08 — análises antes/depois de índices
 ├── migrations/              # ✅ V001__create_schema.sql · ⏳ V002 no Dia 09
 ├── seeds/                   # ✅ dados de exemplo reproduzíveis
-├── queries/                 # ✅ transações e 15 consultas fundamentais · ⏳ Dia 06 — avançadas
+├── queries/                 # ✅ transações, 15 consultas fundamentais e 10 avançadas
 ├── tests/                   # ⏳ Dia 10 — asserts de integridade
 ├── scripts/                 # ⏳ Dia 09 — build.ps1 / build.sh
 ├── CHANGELOG.md
@@ -316,7 +324,7 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 - [x] Schema físico `V001__create_schema.sql` (Dia 03)
 - [x] Seeds realistas (Dia 04)
 - [x] Consultas fundamentais resolvidas (Dia 05)
-- [ ] Consultas avançadas com CTEs e window functions (Dia 06)
+- [x] Consultas avançadas com CTEs e window functions (Dia 06)
 - [ ] Views e triggers (Dia 07)
 - [ ] Análise de performance com índices (Dia 08)
 - [ ] FTS5, JSON e scripts de build (Dia 09)
