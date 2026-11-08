@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_06_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_07_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -71,7 +71,7 @@ Construo o projeto **um dia de cada vez**, com roadmap público, commits pequeno
 | 🗃️ Modelo | 🧠 SQL | 🧪 Qualidade | 🗓️ Processo |
 |:---:|:---:|:---:|:---:|
 | **10** entidades planejadas | **15** consultas fundamentais | testes de integridade no CI | **10** dias de roadmap |
-| **8** regras de negócio | **CTEs** recursivas e **window functions** | `EXPLAIN` antes/depois | **1** ADR registrado |
+| **8** regras de negócio | **CTEs** recursivas e **window functions** | `EXPLAIN` antes/depois | **2** ADRs registrados |
 | até a **3FN** | **views** e **triggers** | migrações versionadas | Conventional Commits |
 
 <sub>Metas para o fim do roadmap. O estado atual está nos badges, no <a href="ROADMAP.md">ROADMAP</a> e na seção <a href="#-o-que-ainda-falta">O que ainda falta</a>.</sub>
@@ -234,6 +234,7 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 | ADR | Decisão | Status |
 |---|---|---|
 | [0001](docs/adr/0001-usar-sqlite.md) | Usar SQLite, com tabelas `STRICT` e dinheiro em centavos | ✅ Aceita |
+| [0002](docs/adr/0002-regras-no-banco.md) | Regras críticas no banco, com triggers | ✅ Aceita |
 
 ---
 
@@ -242,7 +243,7 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
 | 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩🟩🟩 |
-| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩⬜⬜⬜⬜ |
+| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩⬜⬜⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
 
@@ -278,6 +279,12 @@ Para carregar os dados de exemplo (60 clientes, 100 produtos e 320 pedidos, todo
 sqlite3 mercurium.db < seeds/S001__dados_de_exemplo.sql
 ```
 
+Depois dos dados, as views e os triggers. A ordem importa: os pedidos antigos do seed não podem baixar um estoque que só é montado no fim dele ([ADR 0002](docs/adr/0002-regras-no-banco.md)).
+
+```bash
+sqlite3 mercurium.db < migrations/V002__views_e_triggers.sql
+```
+
 Para ver uma transação sendo desfeita na prática:
 
 ```bash
@@ -288,6 +295,12 @@ Para rodar as consultas (fundamentais e avançadas):
 
 ```bash
 sqlite3 -header -column mercurium.db < queries/02-avancadas.sql
+```
+
+Para ver cada trigger em ação, inclusive os erros de propósito (tudo é desfeito no fim):
+
+```bash
+sqlite3 -header -column mercurium.db < queries/03-views-e-triggers.sql
 ```
 
 > Os dados são gerados por CTEs recursivas, sem `RANDOM()`: rodando o script, os resultados são sempre os mesmos.
@@ -304,9 +317,9 @@ mercurium-sql/
 │   ├── modelagem.md         # ✅ requisitos e regras de negócio
 │   ├── der.md               # ✅ DER, cardinalidades e normalização
 │   └── performance.md       # ⏳ Dia 08 — análises antes/depois de índices
-├── migrations/              # ✅ V001__create_schema.sql · ⏳ V002 no Dia 09
+├── migrations/              # ✅ V001 schema · V002 views, triggers e auditoria · ⏳ V003 no Dia 09
 ├── seeds/                   # ✅ dados de exemplo reproduzíveis
-├── queries/                 # ✅ transações, 15 consultas fundamentais e 10 avançadas
+├── queries/                 # ✅ transações, 25 consultas e demonstração dos triggers
 ├── tests/                   # ⏳ Dia 10 — asserts de integridade
 ├── scripts/                 # ⏳ Dia 09 — build.ps1 / build.sh
 ├── CHANGELOG.md
@@ -325,7 +338,7 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 - [x] Seeds realistas (Dia 04)
 - [x] Consultas fundamentais resolvidas (Dia 05)
 - [x] Consultas avançadas com CTEs e window functions (Dia 06)
-- [ ] Views e triggers (Dia 07)
+- [x] Views, triggers de regra de negócio e auditoria (Dia 07)
 - [ ] Análise de performance com índices (Dia 08)
 - [ ] FTS5, JSON e scripts de build (Dia 09)
 - [ ] Testes de integridade e CI no GitHub Actions (Dia 10)

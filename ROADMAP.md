@@ -40,9 +40,9 @@
 - **Conceitos:** particionamento e framing de janelas
 
 ### Dia 07 — Views e triggers
-- [ ] Views: `vw_order_summary`, `vw_customer_lifetime_value`, `vw_low_stock`
-- [ ] Trigger de baixa de estoque ao inserir item de pedido (com `RAISE(ABORT)` se faltar)
-- [ ] Tabela `audit_log` + triggers de auditoria; `updated_at` automático
+- [x] Views: `vw_order_summary`, `vw_customer_lifetime_value`, `vw_low_stock`
+- [x] Trigger de baixa de estoque ao inserir item de pedido (com `RAISE(ABORT)` se faltar)
+- [x] Tabela `audit_log` + triggers de auditoria; `updated_at` automático
 - **Conceitos:** regras no banco vs. na aplicação (registrar em ADR 0002)
 
 ### Dia 08 — Performance

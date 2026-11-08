@@ -17,6 +17,12 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - 15 perguntas de negócio respondidas em `queries/01-fundamentos.sql`, com `JOIN`, `GROUP BY`, `HAVING`, `CASE`, subconsultas correlacionadas e `EXISTS`.
 - 10 consultas analíticas em `queries/02-avancadas.sql`: CTE recursiva da árvore de categorias, `ROW_NUMBER`, `RANK`/`DENSE_RANK`, `LAG`/`LEAD`, `NTILE`, total acumulado e média móvel com framing `ROWS`.
 - Extrato de estoque por produto com saldo acumulado, conferido contra o estoque atual.
+- Migration `V002` com as views `vw_order_summary`, `vw_customer_lifetime_value` e `vw_low_stock`.
+- Estoque guiado pelas movimentações: inserir em `stock_movement` atualiza `inventory`, saída sem saldo é abortada com `RAISE(ABORT)` e o histórico não pode ser alterado nem excluído.
+- Triggers de venda (item de pedido baixa o estoque), cancelamento (devolve o estoque), transições de status, pagamento que fecha o total e avaliação só de quem recebeu o produto.
+- Tabela `audit_log` com o antes e o depois em JSON, e `updated_at` automático em `product` e `customer_order`.
+- Script `queries/03-views-e-triggers.sql`, que mostra cada regra em ação dentro de uma transação desfeita no fim.
+- ADR 0002 — regras críticas no banco, com triggers.
 
 ### Alterado
 - A tabela de pedidos passa a se chamar `customer_order`, porque `order` é palavra reservada do SQL.
