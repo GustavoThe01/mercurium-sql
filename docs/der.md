@@ -208,7 +208,7 @@ Escolhi `RESTRICT` para tudo que é histórico e `CASCADE` só para o que não f
 
 ## 6. Regras que ficam para os triggers
 
-O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas, então entram com os triggers do Dia 07:
+O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas, então estão em triggers na [`V002`](../migrations/V002__views_e_triggers.sql) (decisão no [ADR 0002](adr/0002-regras-no-banco.md)):
 
 - baixa de estoque ao inserir item de pedido, com erro se faltar saldo;
 - pedido só vira `PAID` quando os pagamentos aprovados fecham o total;
@@ -216,4 +216,4 @@ O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas,
 - transições válidas de status do pedido.
 
 ## 7. Próximos passos
-- **Dia 07:** views para os relatórios mais usados e triggers de auditoria.
+- **Dia 08:** medir as consultas com `EXPLAIN QUERY PLAN` e criar índices só onde o plano mostrar ganho.
