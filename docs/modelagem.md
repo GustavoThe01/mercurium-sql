@@ -46,4 +46,5 @@ por produto e toda movimentação deve ser rastreável.
 - ✅ Dia 05: 15 perguntas respondidas em [`01-fundamentos.sql`](../queries/01-fundamentos.sql).
 - ✅ Dia 06: 10 consultas analíticas em [`02-avancadas.sql`](../queries/02-avancadas.sql), com CTEs e window functions.
 - ✅ Dia 07: views, triggers das regras 2, 4, 5, 6 e 7 e auditoria, na [`V002`](../migrations/V002__views_e_triggers.sql).
-- Dia 08: performance com índices.
+- ✅ Dia 08: seis índices e uma view reescrita, todos medidos em [`performance.md`](performance.md).
+- Dia 09: FTS5, JSON e scripts de build.

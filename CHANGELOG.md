@@ -23,6 +23,10 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Tabela `audit_log` com o antes e o depois em JSON, e `updated_at` automático em `product` e `customer_order`.
 - Script `queries/03-views-e-triggers.sql`, que mostra cada regra em ação dentro de uma transação desfeita no fim.
 - ADR 0002 — regras críticas no banco, com triggers.
+- Carga de volume `perf/P001` (≈ 5.000 clientes e 200.000 pedidos) e as sete consultas medidas em `perf/consultas-medidas.sql`.
+- Migration `V003` com seis índices: compostos, de cobertura e para chaves estrangeiras, cada um ligado a uma consulta medida.
+- `vw_customer_lifetime_value` reescrita sem passar por `vw_order_summary`: mesmo resultado, em cerca de 60% do tempo.
+- `docs/performance.md` com os planos e os tempos antes e depois, o custo na escrita e no tamanho, e as consultas em que o índice não ajudou.
 
 ### Alterado
 - A tabela de pedidos passa a se chamar `customer_order`, porque `order` é palavra reservada do SQL.
