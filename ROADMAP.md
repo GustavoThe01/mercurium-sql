@@ -46,13 +46,13 @@
 - **Conceitos:** regras no banco vs. na aplicação (registrar em ADR 0002)
 
 ### Dia 08 — Performance
-- [ ] Medir consultas lentas com `EXPLAIN QUERY PLAN` (antes)
-- [ ] Criar índices compostos, parciais e de cobertura (depois)
-- [ ] Documentar tudo em `docs/performance.md` com os planos lado a lado
+- [x] Medir consultas lentas com `EXPLAIN QUERY PLAN` (antes)
+- [x] Criar índices compostos, parciais e de cobertura (depois)
+- [x] Documentar tudo em `docs/performance.md` com os planos lado a lado
 - **Conceitos:** seletividade, ordem de colunas em índice composto, custo de escrita
 
 ### Dia 09 — Migrações, FTS5 e JSON
-- [ ] `V002__add_product_search.sql` com tabela virtual **FTS5** para busca de produtos
+- [ ] `V004__busca_de_produtos.sql` com tabela virtual **FTS5** para busca de produtos
 - [ ] Coluna de atributos em JSON (`json_extract`, `json_each`)
 - [ ] `scripts/build.ps1` e `scripts/build.sh`: recriam o banco aplicando migrations + seeds
 - [ ] Preencher "Como rodar" no README

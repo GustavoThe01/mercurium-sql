@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_07_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_08_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -229,7 +229,7 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 - **Conventional Commits** — mantenho o histórico legível (`feat:`, `docs:`, `test:`...).
 - **ADR (Architecture Decision Records)** — registro cada decisão relevante com contexto e alternativas.
 - **Banco como guardião** — coloco as regras críticas em constraints e triggers, não só na aplicação.
-- **Medir antes de otimizar** — não crio nenhum índice sem comparar o `EXPLAIN QUERY PLAN` antes e depois.
+- **Medir antes de otimizar** — não crio nenhum índice sem comparar o `EXPLAIN QUERY PLAN` antes e depois. Os números estão em [`docs/performance.md`](docs/performance.md): o histórico de um cliente caiu de 34 ms para 0,09 ms com 200 mil pedidos, e o faturamento mensal quase não mudou, porque precisa de metade da tabela.
 
 | ADR | Decisão | Status |
 |---|---|---|
@@ -243,7 +243,7 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
 | 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩🟩🟩 |
-| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩⬜⬜⬜ |
+| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩🟩⬜⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
 
@@ -285,6 +285,12 @@ Depois dos dados, as views e os triggers. A ordem importa: os pedidos antigos do
 sqlite3 mercurium.db < migrations/V002__views_e_triggers.sql
 ```
 
+E os índices, criados a partir das medições de [`docs/performance.md`](docs/performance.md):
+
+```bash
+sqlite3 mercurium.db < migrations/V003__performance.sql
+```
+
 Para ver uma transação sendo desfeita na prática:
 
 ```bash
@@ -316,8 +322,9 @@ mercurium-sql/
 │   ├── assets/              # ✅ banner e imagens
 │   ├── modelagem.md         # ✅ requisitos e regras de negócio
 │   ├── der.md               # ✅ DER, cardinalidades e normalização
-│   └── performance.md       # ⏳ Dia 08 — análises antes/depois de índices
-├── migrations/              # ✅ V001 schema · V002 views, triggers e auditoria · ⏳ V003 no Dia 09
+│   └── performance.md       # ✅ planos e tempos antes/depois dos índices
+├── migrations/              # ✅ V001 schema · V002 views e triggers · V003 índices · ⏳ V004 no Dia 09
+├── perf/                    # ✅ carga de volume e consultas medidas
 ├── seeds/                   # ✅ dados de exemplo reproduzíveis
 ├── queries/                 # ✅ transações, 25 consultas e demonstração dos triggers
 ├── tests/                   # ⏳ Dia 10 — asserts de integridade
@@ -339,7 +346,7 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 - [x] Consultas fundamentais resolvidas (Dia 05)
 - [x] Consultas avançadas com CTEs e window functions (Dia 06)
 - [x] Views, triggers de regra de negócio e auditoria (Dia 07)
-- [ ] Análise de performance com índices (Dia 08)
+- [x] Análise de performance com índices (Dia 08)
 - [ ] FTS5, JSON e scripts de build (Dia 09)
 - [ ] Testes de integridade e CI no GitHub Actions (Dia 10)
 

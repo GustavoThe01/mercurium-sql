@@ -216,4 +216,4 @@ O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas,
 - transições válidas de status do pedido.
 
 ## 7. Próximos passos
-- **Dia 08:** medir as consultas com `EXPLAIN QUERY PLAN` e criar índices só onde o plano mostrar ganho.
+- **Dia 09:** busca textual com FTS5, campos JSON e scripts de build.
