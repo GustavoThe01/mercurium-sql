@@ -216,4 +216,4 @@ O `CHECK` só enxerga a própria linha. Estas regras dependem de outras tabelas,
 - transições válidas de status do pedido.
 
 ## 7. Próximos passos
-- **Dia 09:** busca textual com FTS5, campos JSON e scripts de build.
+- **Dia 10:** testes de integridade, CI no GitHub Actions e release.

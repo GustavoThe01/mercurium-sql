@@ -1,0 +1,8 @@
+# Ordem de criação do banco. Os dois scripts de build leem este arquivo.
+# Uma migration nova entra aqui, numa linha só, na posição em que precisa rodar.
+# O seed vem antes da V002 de propósito: os triggers de estoque não podem rodar sobre os pedidos históricos.
+migrations/V001__create_schema.sql
+seeds/S001__dados_de_exemplo.sql
+migrations/V002__views_e_triggers.sql
+migrations/V003__performance.sql
+migrations/V004__busca_e_atributos.sql
