@@ -27,6 +27,11 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Migration `V003` com seis índices: compostos, de cobertura e para chaves estrangeiras, cada um ligado a uma consulta medida.
 - `vw_customer_lifetime_value` reescrita sem passar por `vw_order_summary`: mesmo resultado, em cerca de 60% do tempo.
 - `docs/performance.md` com os planos e os tempos antes e depois, o custo na escrita e no tamanho, e as consultas em que o índice não ajudou.
+- Migration `V004` com busca de produtos em FTS5 (sem acento, com `bm25`, prefixo e operadores) mantida por triggers, inclusive ao renomear uma categoria.
+- Coluna `attributes` em JSON, validada por `json_valid`, com os atributos de cada categoria e um índice sobre `json_extract(attributes, '$.cor')`.
+- Consultas `queries/04-busca-e-json.sql` com `MATCH`, `highlight`, `json_extract` e `json_each`.
+- Scripts `build.sh` e `build.ps1`, que recriam o banco na ordem de `scripts/plano.txt`, param no primeiro erro e conferem integridade e chaves estrangeiras.
+- "Como rodar" do README refeito com os scripts de build.
 
 ### Alterado
 - A tabela de pedidos passa a se chamar `customer_order`, porque `order` é palavra reservada do SQL.

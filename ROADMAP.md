@@ -52,10 +52,10 @@
 - **Conceitos:** seletividade, ordem de colunas em índice composto, custo de escrita
 
 ### Dia 09 — Migrações, FTS5 e JSON
-- [ ] `V004__busca_de_produtos.sql` com tabela virtual **FTS5** para busca de produtos
-- [ ] Coluna de atributos em JSON (`json_extract`, `json_each`)
-- [ ] `scripts/build.ps1` e `scripts/build.sh`: recriam o banco aplicando migrations + seeds
-- [ ] Preencher "Como rodar" no README
+- [x] `V004__busca_de_produtos.sql` com tabela virtual **FTS5** para busca de produtos
+- [x] Coluna de atributos em JSON (`json_extract`, `json_each`)
+- [x] `scripts/build.ps1` e `scripts/build.sh`: recriam o banco aplicando migrations + seeds
+- [x] Preencher "Como rodar" no README
 - **Conceitos:** versionamento de schema, migrações idempotentes
 
 ### Dia 10 — Testes, CI e release

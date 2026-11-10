@@ -13,7 +13,7 @@ triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
 ![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_08_de_10-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-dia_09_de_10-0f766e?style=flat-square)
 ![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
 
 </div>
@@ -243,15 +243,13 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
 | 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩🟩🟩 |
-| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩🟩⬜⬜ |
+| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩🟩🟩⬜ |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
 ## 🚀 Como rodar
-
-> O script de build automático entra no **Dia 09**. Até lá, o fluxo é manual.
 
 **Pré-requisito:** [SQLite 3](https://sqlite.org/download.html) (ou o [DB Browser for SQLite](https://sqlitebrowser.org/)).
 
@@ -267,29 +265,22 @@ git clone https://github.com/GustavoThe01/mercurium-sql.git
 cd mercurium-sql
 ```
 
-Para criar o banco com o schema:
+O script de build apaga o banco e aplica tudo do zero, na ordem de [`scripts/plano.txt`](scripts/plano.txt):
+schema, dados de exemplo (60 clientes, 100 produtos e 320 pedidos, todos fictícios), views e triggers, índices,
+busca e atributos. No fim, confere a integridade e as chaves estrangeiras.
 
 ```bash
-sqlite3 mercurium.db < migrations/V001__create_schema.sql
+./scripts/build.sh
 ```
 
-Para carregar os dados de exemplo (60 clientes, 100 produtos e 320 pedidos, todos fictícios):
+No Windows (PowerShell):
 
-```bash
-sqlite3 mercurium.db < seeds/S001__dados_de_exemplo.sql
+```powershell
+.\scripts\build.ps1
 ```
 
-Depois dos dados, as views e os triggers. A ordem importa: os pedidos antigos do seed não podem baixar um estoque que só é montado no fim dele ([ADR 0002](docs/adr/0002-regras-no-banco.md)).
-
-```bash
-sqlite3 mercurium.db < migrations/V002__views_e_triggers.sql
-```
-
-E os índices, criados a partir das medições de [`docs/performance.md`](docs/performance.md):
-
-```bash
-sqlite3 mercurium.db < migrations/V003__performance.sql
-```
+> A ordem importa: o seed vem antes da V002, porque os pedidos antigos não podem baixar um estoque que só é montado
+> no fim dele ([ADR 0002](docs/adr/0002-regras-no-banco.md)). Por isso a ordem fica num arquivo só, lido pelos dois scripts.
 
 Para ver uma transação sendo desfeita na prática:
 
@@ -309,6 +300,12 @@ Para ver cada trigger em ação, inclusive os erros de propósito (tudo é desfe
 sqlite3 -header -column mercurium.db < queries/03-views-e-triggers.sql
 ```
 
+Para buscar produtos por texto (sem acento, com relevância) e consultar os atributos em JSON:
+
+```bash
+sqlite3 -header -column mercurium.db < queries/04-busca-e-json.sql
+```
+
 > Os dados são gerados por CTEs recursivas, sem `RANDOM()`: rodando o script, os resultados são sempre os mesmos.
 
 ---
@@ -323,12 +320,12 @@ mercurium-sql/
 │   ├── modelagem.md         # ✅ requisitos e regras de negócio
 │   ├── der.md               # ✅ DER, cardinalidades e normalização
 │   └── performance.md       # ✅ planos e tempos antes/depois dos índices
-├── migrations/              # ✅ V001 schema · V002 views e triggers · V003 índices · ⏳ V004 no Dia 09
+├── migrations/              # ✅ V001 schema · V002 views e triggers · V003 índices · V004 busca e JSON
 ├── perf/                    # ✅ carga de volume e consultas medidas
 ├── seeds/                   # ✅ dados de exemplo reproduzíveis
 ├── queries/                 # ✅ transações, 25 consultas e demonstração dos triggers
 ├── tests/                   # ⏳ Dia 10 — asserts de integridade
-├── scripts/                 # ⏳ Dia 09 — build.ps1 / build.sh
+├── scripts/                 # ✅ build.sh, build.ps1 e a ordem das migrations
 ├── CHANGELOG.md
 └── ROADMAP.md
 ```
@@ -347,7 +344,7 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 - [x] Consultas avançadas com CTEs e window functions (Dia 06)
 - [x] Views, triggers de regra de negócio e auditoria (Dia 07)
 - [x] Análise de performance com índices (Dia 08)
-- [ ] FTS5, JSON e scripts de build (Dia 09)
+- [x] FTS5, JSON e scripts de build (Dia 09)
 - [ ] Testes de integridade e CI no GitHub Actions (Dia 10)
 
 **README**
