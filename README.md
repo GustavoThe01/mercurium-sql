@@ -9,12 +9,14 @@
 Do requisito ao índice: modelo conceitual, normalização, schema físico, consultas analíticas,<br/>
 triggers, performance medida com `EXPLAIN QUERY PLAN` e testes de integridade no CI.
 
+[![CI](https://github.com/GustavoThe01/mercurium-sql/actions/workflows/ci.yml/badge.svg)](https://github.com/GustavoThe01/mercurium-sql/actions/workflows/ci.yml)
 ![SQLite](https://img.shields.io/badge/SQLite-3-003B57?style=flat-square&logo=sqlite&logoColor=white)
 ![SQL](https://img.shields.io/badge/SQL-ANSI_+_extensões-336791?style=flat-square)
 ![Mermaid](https://img.shields.io/badge/DER-Mermaid-FF3670?style=flat-square&logo=mermaid&logoColor=white)
-![Status](https://img.shields.io/badge/status-em_construção-f59e0b?style=flat-square)
-![Roadmap](https://img.shields.io/badge/roadmap-dia_09_de_10-0f766e?style=flat-square)
-![ADRs](https://img.shields.io/badge/ADRs-1-6366f1?style=flat-square)
+![Versão](https://img.shields.io/badge/versão-1.0.0-0f766e?style=flat-square)
+![Roadmap](https://img.shields.io/badge/roadmap-10_de_10-15803d?style=flat-square)
+![Testes](https://img.shields.io/badge/testes_SQL-20-15803d?style=flat-square)
+![ADRs](https://img.shields.io/badge/ADRs-2-6366f1?style=flat-square)
 
 </div>
 
@@ -54,10 +56,12 @@ Construo o projeto **um dia de cada vez**, com roadmap público, commits pequeno
 - [Modelo de dados](#️-modelo-de-dados)
 - [Regras de negócio](#-regras-de-negócio)
 - [Perguntas que o banco responde](#-perguntas-que-o-banco-responde)
+- [Resultados reais](#-resultados-reais)
 - [Competências demonstradas](#-competências-demonstradas)
 - [Metodologias e decisões](#-metodologias-e-decisões)
 - [Roadmap](#️-roadmap)
 - [Como rodar](#-como-rodar)
+- [Testes e CI](#-testes-e-ci)
 - [Estrutura do projeto](#-estrutura-do-projeto)
 - [O que ainda falta](#-o-que-ainda-falta)
 - [Projetos relacionados](#-projetos-relacionados)
@@ -70,11 +74,11 @@ Construo o projeto **um dia de cada vez**, com roadmap público, commits pequeno
 
 | 🗃️ Modelo | 🧠 SQL | 🧪 Qualidade | 🗓️ Processo |
 |:---:|:---:|:---:|:---:|
-| **10** entidades planejadas | **15** consultas fundamentais | testes de integridade no CI | **10** dias de roadmap |
+| **10** tabelas · **4** migrations | **15** consultas fundamentais + **10** avançadas | **20** testes SQL no CI | **10** dias de roadmap |
 | **8** regras de negócio | **CTEs** recursivas e **window functions** | `EXPLAIN` antes/depois | **2** ADRs registrados |
-| até a **3FN** | **views** e **triggers** | migrações versionadas | Conventional Commits |
+| até a **3FN** | **views**, **triggers**, FTS5 e JSON | 60 clientes · 100 produtos · 320 pedidos fictícios | Conventional Commits |
 
-<sub>Metas para o fim do roadmap. O estado atual está nos badges, no <a href="ROADMAP.md">ROADMAP</a> e na seção <a href="#-o-que-ainda-falta">O que ainda falta</a>.</sub>
+<sub>Números da versão 1.0.0, contados no banco gerado pelo <code>build.sh</code>.</sub>
 
 </div>
 
@@ -207,6 +211,41 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 
 ---
 
+## 📈 Resultados reais
+
+Saídas copiadas do banco gerado pelo `build.sh`. Como os dados de exemplo são determinísticos, quem rodar o
+script vai ver exatamente estes números.
+
+**Faturamento por categoria raiz**, somando as subcategorias com uma CTE recursiva (consulta 2):
+
+| Categoria raiz | Faturamento |
+|---|---:|
+| Eletrônicos | R$ 167.781,15 |
+| Casa | R$ 75.049,40 |
+| Vestuário | R$ 56.985,70 |
+
+**Top 3 por categoria e o empate** (consulta 4). Em "Camisetas básicas", dois produtos venderam 28 unidades.
+`RANK` deixa um buraco depois do empate; `DENSE_RANK` não:
+
+| Produto | Unidades | `RANK` | `DENSE_RANK` |
+|---|---:|---:|---:|
+| Camiseta Fênix | 28 | 1 | 1 |
+| Camiseta Jade | 28 | 1 | 1 |
+| Camiseta Brisa | 24 | **3** | **2** |
+
+**Crescimento mês a mês com `LAG`** (consulta 5, primeiros meses):
+
+| Mês | Faturamento | Mês anterior | Variação |
+|---|---:|---:|---:|
+| 2025-11 | R$ 25.671,50 | — | — |
+| 2025-12 | R$ 24.992,95 | R$ 25.671,50 | −2,6% |
+| 2026-01 | R$ 25.002,85 | R$ 24.992,95 | 0,0% |
+| 2026-02 | R$ 23.167,55 | R$ 25.002,85 | −7,3% |
+| 2026-03 | R$ 25.449,10 | R$ 23.167,55 | +9,8% |
+| 2026-04 | R$ 25.307,20 | R$ 25.449,10 | −0,6% |
+
+---
+
 ## 🧠 Competências demonstradas
 
 | Área | Conceitos |
@@ -243,7 +282,7 @@ As perguntas com `LAG`, `RANK` e CTE recursiva estão respondidas em [`queries/0
 | Semana | Dias | Tema | Progresso |
 |---|---|---|---|
 | 1 | 01–05 | Requisitos, DER, normalização, DDL, seeds e consultas fundamentais | 🟩🟩🟩🟩🟩 |
-| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩🟩🟩⬜ |
+| 2 | 06–10 | CTEs, window functions, views, triggers, performance, FTS5, CI e release | 🟩🟩🟩🟩🟩 |
 
 Detalhes de cada dia no [ROADMAP.md](ROADMAP.md) e histórico de mudanças no [CHANGELOG.md](CHANGELOG.md).
 
@@ -310,10 +349,41 @@ sqlite3 -header -column mercurium.db < queries/04-busca-e-json.sql
 
 ---
 
+## 🧪 Testes e CI
+
+Um teste de banco aqui é uma consulta que **procura o erro**: se o banco está certo, ela não devolve nenhuma linha.
+Quando algo quebra, a linha que aparece diz qual teste falhou e quantos registros estão errados.
+
+| Arquivo | O que confere | Testes |
+|---|---|---:|
+| [`tests/integrity.sql`](tests/integrity.sql) | Os dados como estão: estoque negativo, saldo diferente das movimentações, pedido pago sem pagamento que feche o total, pedido cancelado com pagamento aprovado, avaliação sem entrega, ciclo na árvore de categorias, busca FTS5 fora de sincronia, JSON inválido, datas fora do ISO 8601 e outros | 12 |
+| [`tests/regras.sql`](tests/regras.sql) | Os triggers em ação: faz uma venda, um cancelamento, uma mudança de preço e um produto novo dentro de uma transação, confere o efeito de cada um e desfaz tudo com `ROLLBACK` | 8 |
+
+```bash
+./scripts/build.sh && ./scripts/test.sh
+```
+
+No Windows (PowerShell):
+
+```powershell
+.\scripts\build.ps1; .\scripts\test.ps1
+```
+
+O script roda cada arquivo de `tests/` com `sqlite3 -bail` e falha se algum deles imprimir qualquer coisa.
+Para ter certeza de que os testes pegam erro de verdade, estraguei um banco de propósito (estoque negativo, saldo
+divergente, JSON inválido) e conferi que o script falhou apontando cada um deles.
+
+O [workflow de CI](.github/workflows/ci.yml) faz o mesmo a cada push e pull request: instala o `sqlite3` no Ubuntu,
+cria o banco do zero, roda os testes e executa as consultas fundamentais, avançadas e de busca para garantir que
+nenhuma quebrou.
+
+---
+
 ## 📁 Estrutura do projeto
 
 ```
 mercurium-sql/
+├── .github/workflows/ci.yml # ✅ cria o banco e roda os testes a cada push
 ├── docs/
 │   ├── adr/                 # ✅ decisões de arquitetura
 │   ├── assets/              # ✅ banner e imagens
@@ -324,8 +394,8 @@ mercurium-sql/
 ├── perf/                    # ✅ carga de volume e consultas medidas
 ├── seeds/                   # ✅ dados de exemplo reproduzíveis
 ├── queries/                 # ✅ transações, 25 consultas e demonstração dos triggers
-├── tests/                   # ⏳ Dia 10 — asserts de integridade
-├── scripts/                 # ✅ build.sh, build.ps1 e a ordem das migrations
+├── tests/                   # ✅ integridade (12 testes) e regras dos triggers (8 testes)
+├── scripts/                 # ✅ build e testes (sh e ps1) e a ordem das migrations
 ├── CHANGELOG.md
 └── ROADMAP.md
 ```
@@ -345,13 +415,14 @@ Mantenho aqui um checklist vivo do que ainda vou incrementar neste repositório 
 - [x] Views, triggers de regra de negócio e auditoria (Dia 07)
 - [x] Análise de performance com índices (Dia 08)
 - [x] FTS5, JSON e scripts de build (Dia 09)
-- [ ] Testes de integridade e CI no GitHub Actions (Dia 10)
+- [x] Testes de integridade e CI no GitHub Actions (Dia 10)
 
 **README**
-- [ ] Badge de CI (quando o workflow existir)
-- [ ] Prints do banco no DB Browser e exemplos de resultado das consultas
+- [x] Badge de CI
+- [x] Exemplos de resultado das consultas
+- [ ] Prints do banco no DB Browser
 - [ ] Tabela com os planos de execução antes/depois dos índices
-- [ ] Atualizar "Em números" com valores reais (linhas de seed, consultas, testes)
+- [x] Atualizar "Em números" com valores reais (linhas de seed, consultas, testes)
 - [ ] Definir e adicionar uma licença (`LICENSE`)
 - [ ] Versão em inglês do README
 

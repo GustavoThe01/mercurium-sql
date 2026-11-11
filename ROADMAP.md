@@ -59,10 +59,10 @@
 - **Conceitos:** versionamento de schema, migrações idempotentes
 
 ### Dia 10 — Testes, CI e release
-- [ ] `tests/integrity.sql`: consultas que devem retornar 0 linhas (órfãos, estoque negativo...)
-- [ ] GitHub Actions: instala sqlite3, roda build + testes
-- [ ] README final com DER, exemplos de consultas e resultados
-- [ ] `CHANGELOG.md` + tag `v1.0.0`
+- [x] `tests/integrity.sql`: consultas que devem retornar 0 linhas (órfãos, estoque negativo...)
+- [x] GitHub Actions: instala sqlite3, roda build + testes
+- [x] README final com DER, exemplos de consultas e resultados
+- [x] `CHANGELOG.md` + tag `v1.0.0`
 - **Conceitos:** testes de banco, CI
 
 ## Ideias de evolução (opcional)

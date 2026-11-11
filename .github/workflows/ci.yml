@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  database:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Instalar o SQLite
+        run: sudo apt-get update && sudo apt-get install -y sqlite3 && sqlite3 --version
+
+      - name: Criar o banco do zero
+        run: chmod +x scripts/*.sh && ./scripts/build.sh
+
+      - name: Testes de integridade e de regras
+        run: ./scripts/test.sh
+
+      - name: Consultas rodam sem erro
+        run: |
+          for query in queries/01-fundamentos.sql queries/02-avancadas.sql queries/04-busca-e-json.sql; do
+            echo "-> $query"
+            sqlite3 -bail mercurium.db ".read $query" > /dev/null
+          done

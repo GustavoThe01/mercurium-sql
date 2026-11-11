@@ -5,7 +5,21 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
 
+## [1.0.0] - 2026-11-11
+
+Primeira versão completa: os 10 dias do roadmap.
+
 ### Adicionado
+- `tests/integrity.sql`: 12 testes de integridade, cada um uma consulta que só devolve linhas quando encontra dados errados.
+- `tests/regras.sql`: 8 testes dos triggers (venda, cancelamento, auditoria, preço, busca e atributos), dentro de uma transação desfeita no fim.
+- `scripts/test.sh` e `scripts/test.ps1`, que rodam os testes com `sqlite3 -bail` e falham se algum imprimir resultado.
+- Workflow de CI no GitHub Actions: instala o `sqlite3`, cria o banco do zero, roda os testes e as consultas.
+- README com badge de CI, seção de testes e resultados reais das consultas.
+
+### Removido
+- `tests/.gitkeep`, agora que a pasta tem os testes.
+
+### Adicionado (Dias 01 a 09)
 - Estrutura do repositório (`docs/`, `migrations/`, `seeds/`, `queries/`, `tests/`, `scripts/`).
 - Documento de requisitos e regras de negócio (`docs/modelagem.md`).
 - ADR 0001 — escolha do SQLite.
@@ -33,7 +47,10 @@ e [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 - Scripts `build.sh` e `build.ps1`, que recriam o banco na ordem de `scripts/plano.txt`, param no primeiro erro e conferem integridade e chaves estrangeiras.
 - "Como rodar" do README refeito com os scripts de build.
 
-### Alterado
+### Alterado (Dias 01 a 09)
 - A tabela de pedidos passa a se chamar `customer_order`, porque `order` é palavra reservada do SQL.
 - O total do pedido deixa de ser coluna e passa a ser calculado a partir dos itens.
 - O endereço de entrega passa a ser copiado para o pedido (snapshot), em vez de apontar para `address`.
+
+[Não lançado]: https://github.com/GustavoThe01/mercurium-sql/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/GustavoThe01/mercurium-sql/releases/tag/v1.0.0
